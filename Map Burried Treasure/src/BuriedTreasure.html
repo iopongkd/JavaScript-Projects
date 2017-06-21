@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Find the buried treasure</title>
+  </head>
+  <body>
+    <h1 id="heading">Find the buried treasure!</h1>
+
+    <img id="map" width=400 height=400
+    src="http://nostarch.com/images/treasuremap.png">
+
+    <p id="distance"></p>
+
+    <script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+
+    <script type="text/javascript">
+      //Game script goes there.
+
+
+      //Picking our random location for the treasure
+      //Since our img is 400 X 400 the top left corner is (0, 0), and the buttom
+      //right is (399, 399)
+
+      //We create a function that will pick random x and y coordinates.
+      var randomLocation = function(size){
+        return Math.floor(Math.random()*size);
+      };
+
+      //To determine how far a user is from the distance we create a function
+      //To measure that. We use the distance formula to measure that.
+
+      var getDistance = function(event, target){
+        var diffX = event.offsetX - target.x;
+        var diffY = event.offsetY - target.y;
+
+        return Math.sqrt((diffX*diffX) + (diffY*diffY));
+      };
+
+      //In order to figure out if we're hot or cold we need to gauge how far
+      //What it means to be hot or cold.
+      var getDistanceHint = function(distance){
+        if(distance < 10){
+          return "Boiling hot!";
+        }else if(distance < 20){
+          return "Really hot";
+        }else if(distance < 40){
+          return "Hot";
+        }else if(distance < 80){
+          return "Warm";
+        }else if(distance < 160){
+          return "Cold";
+        }else if(distance < 320){
+          return "Really cold";
+        }else {
+          return "Freezing!";
+        }
+      }
+
+      //Setting our coordinates
+      var width = 400;
+      var height = 400;
+      var clicks = 0;
+
+
+      //Creating an object target that will regenerate each time we run our code
+      var target = {
+        x: randomLocation(width),
+        y: randomLocation(height)
+      };
+
+      //Creating our click listener that will tell us when a user clicks man.
+      //Click listener has to count the amount of clicks and how far the user
+      //is from the target.
+      $("#map").click(function(event){
+        clicks++;
+        var distance = getDistance(event, target);
+        var distanceHint = getDistanceHint(distance);
+        $("#distance").text(distanceHint);
+        if(distance < 8){
+          alert("Found it! "+ clicks + " Clicks!");
+        }
+      });
+
+      //Try to modify the code to give out questions like a dora guessing where
+      //Things are in a map.
+      
+    </script>
+
+  </body>
+</html>
